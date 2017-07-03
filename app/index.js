@@ -41,7 +41,7 @@ module.exports = generator.extend({
                 {
                     name: 'jQuery',
                     value: 'jquery',
-                    checked: true
+                    checked: false
                 },
                 {
                     name: 'lodash',
@@ -54,9 +54,24 @@ module.exports = generator.extend({
                     checked: false
                 },
                 {
-                    name: 'jQuery',
-                    value: 'jquery',
-                    checked: true
+                    name: 'pd-spUtil.js',
+                    value: 'pdsputil',
+                    checked: false
+                },
+                {
+                    name: 'pd-spServerAjax.js',
+                    value: 'pdspserverajax',
+                    checked: false
+                },
+                {
+                    name: 'pd-spServerJsom.js',
+                    value: 'spserverjsom',
+                    checked: false
+                },
+                {
+                    name: 'pd-appUtil.js',
+                    value: 'pdapputil',
+                    checked: false
                 }
             ]
         }]).then(function(answers){
@@ -68,6 +83,10 @@ module.exports = generator.extend({
             self.includeJquery = self.includes(answers.jslibs, 'jquery');
             self.includeLodash = self.includes(answers.jslibs, 'lodash');
             self.includeMoment = self.includes(answers.jslibs, 'momentjs');             
+            self.includesputil = self.includes(answers.jslibs, 'pdsputil');             
+            self.includespserverajax = self.includes(answers.jslibs, 'pdspserverajax');             
+            self.includespserverjsom = self.includes(answers.jslibs, 'pdspserverjson');             
+            self.includeapputil = self.includes(answers.jslibs, 'pdapputil');             
             //done(); 
         });
             
@@ -94,21 +113,21 @@ module.exports = generator.extend({
             if(this.includeJquery) {packageFile.dependencies["jquery"] = "latest";}
             if(this.includeLodash) {packageFile.dependencies["lodash"] = "latest";}
             if(this.includeMoment) {packageFile.dependencies["moment"] = "latest";}
-            packageFile.dependencies["react"] = "latest";
-            packageFile.dependencies["react-dom"] = "latest";
+            if(this.includesputil) {packageFile.dependencies["pd-sputil"] = "latest";}
+            if(this.includespserverajax) {packageFile.dependencies["pd-spserverajax"] = "latest";}
+            if(this.includespserverjsom) {packageFile.dependencies["pd-spserverjsom"] = "latest";}
+            if(this.includeapputil) {packageFile.dependencies["pd-apputil"] = "latest";}
             
             //devDependencies
             packageFile.devDependencies["babel-core"] = "latest";
             packageFile.devDependencies["babel-loader"] = "latest";
             packageFile.devDependencies["babel-preset-es2015"] = "latest";
+            packageFile.devDependencies["babel-preset-stage-0"] = "latest"
             packageFile.devDependencies["babel-preset-react"] = "latest";
-            packageFile.devDependencies["del"] = "latest";
             packageFile.devDependencies["gulp"] = "latest";
-            packageFile.devDependencies["gulp-concat"] = "latest";
             packageFile.devDependencies["gulp-util"] = "latest";
             packageFile.devDependencies["webpack"] = "latest";
-            packageFile.devDependencies["webpack-stream"] = "latest";
-            //this.copy('_package.json', 'package.json');
+            packageFile.devDependencies["webpack-dev-server"] = "latest";
 
             this.fs.writeJSON(
                 this.destinationPath('package.json'),
@@ -140,6 +159,10 @@ module.exports = generator.extend({
                 this.destinationPath('.jshintrc')
             );
             this.fs.copy(
+                this.templatePath('gitignore'),
+                this.destinationPath('.gitignore')
+            );
+            this.fs.copy(
                 this.templatePath('babelrc'),
                 this.destinationPath('.babelrc')
             );
@@ -150,7 +173,7 @@ module.exports = generator.extend({
         },
         scripts: function(){
             this.fs.copyTpl(
-                this.templatePath('app/_app.js'),
+                this.templatePath('app/scripts/_app.js'),
                 this.destinationPath('src/js/app.js'),
                 {
                     projectName: this.projectName
@@ -158,8 +181,18 @@ module.exports = generator.extend({
                 }
             );
             this.fs.copyTpl(
-                this.templatePath('app/components/_App.js'),
-                this.destinationPath('src/js/components/app.js'),
+                this.templatePath('app/scripts/components/_components.jsx'),
+                this.destinationPath('src/js/components/components.jsx'),
+                {
+                    projectName: this.projectName
+                    //app: this.config.get('ngappname')
+                }
+            );
+        },
+        styleSheets: function() {
+            this.fs.copyTpl(
+                this.templatePath('app/styleSheets/_main.css'),
+                this.destinationPath('src/styleSheets/main.css'),
                 {
                     projectName: this.projectName
                     //app: this.config.get('ngappname')

@@ -1,21 +1,28 @@
-const path = require('path');
+const   path = require('path');
+
 module.exports = {
+    entry: './src/scripts/app.js',
+    output: {
+        path: path.resolve(__dirname, "./dist/scripts"),
+    },
     module:{
         rules:[
             {  
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {loader: 'babel-loader'}
-            },
-            {  
-                test: /\.jsx$/,
-                exclude: /node_modules/,
-                use: {loader: 'babel-loader'}
+                test: /\.js$|\.jsx$/,
+                //exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                             [['es2015', {modules: false}], 'react', 'stage-0']
+                        ]
+                    }
+                }
             }
         ]
     },
-    output: {
-        filename: 'main.js'
-    }
+    plugins: [],
+    externals: {}
+    //devtool: 'source-map'
 };
 
