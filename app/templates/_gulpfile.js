@@ -60,7 +60,7 @@ gulp.task('copyCSS', function () {
 });
 gulp.task('copyHTML', function () {
     gulp.src('./src/index.html')
-        .pipe(gulp.dest('./dist/index.html'));
+        .pipe(gulp.dest('./dist'));
 });
 
     /*

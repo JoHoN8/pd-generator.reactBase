@@ -1,5 +1,5 @@
 /*
-    appName: <%= ngapp %>
+    app name <%= projectName %>
     author: Ted
     date: 
 */

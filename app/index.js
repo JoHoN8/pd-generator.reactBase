@@ -24,13 +24,13 @@ module.exports = generator.extend({
         var self = this;
 
         this.log(yosay('Welcome to ' + 
-            chalk.yellow('YANG (Yet Another Angular)') + ' generator!'));
+            chalk.yellow('React Vanilla') + ' generator!'));
             
         //var done = this.async();
         return this.prompt([{
             type: 'input',
             name: 'projectName',
-            message: 'Provide project name (siteApp)',
+            message: 'Provide project name',
             default: 'siteApp'
         },
         {
@@ -110,6 +110,8 @@ module.exports = generator.extend({
             };
 
             //dependencies
+            packageFile.dependencies.react = 'latest';
+            packageFile.dependencies['react-dom'] = 'latest';
             if(this.includeJquery) {packageFile.dependencies["jquery"] = "latest";}
             if(this.includeLodash) {packageFile.dependencies["lodash"] = "latest";}
             if(this.includeMoment) {packageFile.dependencies["moment"] = "latest";}
@@ -147,14 +149,6 @@ module.exports = generator.extend({
         appStaticFiles: function(){
             // this.copy('_favicon.ico', 'src/favicon.ico');
             this.fs.copy(
-                this.templatePath('doea/*.js'),
-                this.destinationPath('src/js/doeaLibs')
-            );
-            this.fs.copy(
-                this.templatePath('styles/*.css'),
-                this.destinationPath('src/styles')
-            );
-            this.fs.copy(
                 this.templatePath('jshintrc'),
                 this.destinationPath('.jshintrc')
             );
@@ -174,7 +168,7 @@ module.exports = generator.extend({
         scripts: function(){
             this.fs.copyTpl(
                 this.templatePath('app/scripts/_app.js'),
-                this.destinationPath('src/js/app.js'),
+                this.destinationPath('src/scripts/app.js'),
                 {
                     projectName: this.projectName
                     //app: this.config.get('ngappname')
@@ -182,7 +176,7 @@ module.exports = generator.extend({
             );
             this.fs.copyTpl(
                 this.templatePath('app/scripts/components/_components.jsx'),
-                this.destinationPath('src/js/components/components.jsx'),
+                this.destinationPath('src/scripts/components/components.jsx'),
                 {
                     projectName: this.projectName
                     //app: this.config.get('ngappname')
@@ -201,7 +195,7 @@ module.exports = generator.extend({
         },
         html: function(){
             this.fs.copyTpl(
-                this.templatePath('_index.html'),
+                this.templatePath('app/_index.html'),
                 this.destinationPath('src/index.html'),
                 {
                     projectName: this.projectName

@@ -14,7 +14,9 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: [
-                             [['es2015', {modules: false}], 'react', 'stage-0']
+                             ['es2015', {modules: false}],
+                             'react',
+                             'stage-0'
                         ]
                     }
                 }
