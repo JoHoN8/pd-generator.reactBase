@@ -121,6 +121,9 @@ module.exports = generator.extend({
             if(this.includeapputil) {packageFile.dependencies["pd-apputil"] = "latest";}
             
             //devDependencies
+            packageFile.devDependencies["webpack"] = "latest";
+            packageFile.devDependencies["css-loader"] = "latest";
+            packageFile.devDependencies["style-loader"] = "latest";
             packageFile.devDependencies["babel-core"] = "latest";
             packageFile.devDependencies["babel-loader"] = "latest";
             packageFile.devDependencies["babel-preset-es2015"] = "latest";
@@ -128,8 +131,6 @@ module.exports = generator.extend({
             packageFile.devDependencies["babel-preset-react"] = "latest";
             packageFile.devDependencies["gulp"] = "latest";
             packageFile.devDependencies["gulp-util"] = "latest";
-            packageFile.devDependencies["webpack"] = "latest";
-            packageFile.devDependencies["webpack-dev-server"] = "latest";
 
             this.fs.writeJSON(
                 this.destinationPath('package.json'),
@@ -149,8 +150,8 @@ module.exports = generator.extend({
         appStaticFiles: function(){
             // this.copy('_favicon.ico', 'src/favicon.ico');
             this.fs.copy(
-                this.templatePath('jshintrc'),
-                this.destinationPath('.jshintrc')
+                this.templatePath('.eslintrc.json'),
+                this.destinationPath('.eslintrc.json')
             );
             this.fs.copy(
                 this.templatePath('gitignore'),
