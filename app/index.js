@@ -210,7 +210,7 @@ module.exports = generator.extend({
     },
     install: function(){
         //this.bowerInstall();
-        this.yarnInstall();
+        this.npmInstall();
     },
     end: function(){
         this.log(chalk.yellow.bold('Installation successful!'));
