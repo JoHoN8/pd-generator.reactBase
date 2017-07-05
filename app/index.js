@@ -131,6 +131,7 @@ module.exports = generator.extend({
             packageFile.devDependencies["babel-preset-react"] = "latest";
             packageFile.devDependencies["gulp"] = "latest";
             packageFile.devDependencies["gulp-util"] = "latest";
+            packageFile.devDependencies["gulp-spsave"] = "latest";
             packageFile.devDependencies["eslint"] = "latest";
             packageFile.devDependencies["eslint-plugin-react"] = "latest";
 
