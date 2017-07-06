@@ -112,6 +112,7 @@ module.exports = generator.extend({
             //dependencies
             packageFile.dependencies.react = 'latest';
             packageFile.dependencies['react-dom'] = 'latest';
+            packageFile.dependencies['prop-types'] = 'latest';
             if(this.includeJquery) {packageFile.dependencies["jquery"] = "latest";}
             if(this.includeLodash) {packageFile.dependencies["lodash"] = "latest";}
             if(this.includeMoment) {packageFile.dependencies["moment"] = "latest";}
