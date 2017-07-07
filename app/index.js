@@ -133,6 +133,7 @@ module.exports = generator.extend({
             packageFile.devDependencies["gulp"] = "latest";
             packageFile.devDependencies["gulp-util"] = "latest";
             packageFile.devDependencies["gulp-spsave"] = "latest";
+            packageFile.devDependencies["gulp-connect"] = "latest";
             packageFile.devDependencies["eslint"] = "latest";
             packageFile.devDependencies["eslint-plugin-react"] = "latest";
 

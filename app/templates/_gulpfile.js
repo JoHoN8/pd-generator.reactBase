@@ -4,7 +4,8 @@ var gulp = require('gulp'),
     spsave = require('gulp-spsave'),
     webpack = require('webpack'),
     webpackConfig = require('./webpack.config.js'),
-    packageData = require("./package.json");
+    packageData = require("./package.json"),
+    connect = require('gulp-connect');
 
 
 /************common webpack configs************/
@@ -87,20 +88,13 @@ gulp.task('copyHTML', function () {
         .pipe(gulp.dest('./dist'));
 });
 
-    /*
-    to min
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
-
-    Sass compile (gulp-ruby-sass)
-    Autoprefixer (gulp-autoprefixer)
-    Minify CSS (gulp-cssnano)
-    JSHint (gulp-jshint)
-    Concatenation (gulp-concat)
-    Uglify (gulp-uglify)
-    Compress images (gulp-imagemin)
-    LiveReload (gulp-livereload)
-    Caching of images so only changed images are compressed (gulp-cache)
-    Notify of changes (gulp-notify)
-    Clean files for a clean build (del)
-    */
+/****************server stuff****************************/
+gulp.task('startServer', function () {
+    connect.server({
+        root: './dist',
+        livereload: true
+    });
+});
+gulp.task('stopServer', function () {
+    connect.serverClose();
+});
