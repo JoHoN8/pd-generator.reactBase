@@ -20,9 +20,12 @@ gulp.task('saveAll', ['saveScripts', 'saveStyles', 'savePages']);
 
 gulp.task('webpack:prod', function (callback) {
     //custom production config
-    let UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+    let UglifyJsPlugin = new webpack.optimize.UglifyJsPlugin();
+    let prodTrigger = new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    });
     webpackConfig.output.filename = 'app.min.js';
-    webpackConfig.plugins.push(new UglifyJsPlugin({ minimize: true }));
+    webpackConfig.plugins.push(prodTrigger, UglifyJsPlugin);
     
     webpack(webpackConfig, function (err, stats) {
         if (err) {
