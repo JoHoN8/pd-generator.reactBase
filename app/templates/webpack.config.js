@@ -17,7 +17,14 @@ module.exports = {
                 //exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
-                    options: {}
+                    options: {
+                        presets: [
+                            ["es2015", {"modules": false}],
+                            "react",
+                            "stage-0"
+                        ],
+                        plugins: []
+                    }
                 }
             }
         ]

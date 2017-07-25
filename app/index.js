@@ -163,10 +163,6 @@ module.exports = generator.extend({
                 this.destinationPath('.gitignore')
             );
             this.fs.copy(
-                this.templatePath('babelrc'),
-                this.destinationPath('.babelrc')
-            );
-            this.fs.copy(
                 this.templatePath('webpack.config.js'),
                 this.destinationPath('webpack.config.js')
             );
