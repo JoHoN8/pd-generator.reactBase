@@ -1,9 +1,20 @@
-const   path = require('path');
+const   path = require('path'),
+        webpack = require('webpack'),
+        HtmlWebpackPlugin = require('html-webpack-plugin'),
+        htmlConfig = {
+            template: "./src/index.html",
+            filename: "index.html",
+            inject: "body"
+        };
+
 
 module.exports = {
+    //context: path.resolve(__dirname, "app"),
     entry: './src/scripts/app.js',
     output: {
-        path: path.resolve(__dirname, "./dist/scripts"),
+        path: path.resolve(__dirname, "./dist"),
+        filename: './scripts/app.js',
+        publicPath: '/'
     },
     module:{
         rules:[
@@ -18,7 +29,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: [
+                        "presets": [
                             ["es2015", {"modules": false}],
                             "react",
                             "stage-0"
@@ -26,14 +37,24 @@ module.exports = {
                         plugins: []
                     }
                 }
+            },
+            {
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                use: [ 'style-loader', 'file-loader' ]
             }
         ]
     },
     resolve: {
         extensions: [".js", ".jsx", ".css"]
     },
-    plugins: [],
-    externals: {}
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new HtmlWebpackPlugin(htmlConfig)
+    ],
+    devServer: {
+        hot: true, // Tell the dev-server we're using HMR
+        contentBase: './dist'
+    }
     //devtool: 'source-map'
 };
 

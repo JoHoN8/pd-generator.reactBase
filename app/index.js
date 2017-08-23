@@ -123,7 +123,10 @@ module.exports = generator.extend({
             
             //devDependencies
             packageFile.devDependencies["webpack"] = "latest";
+            packageFile.devDependencies["webpack-dev-server"] = "latest";
             packageFile.devDependencies["css-loader"] = "latest";
+            packageFile.devDependencies["html-webpack-plugin"] = "latest";
+            packageFile.devDependencies["file-loader"] = "latest";
             packageFile.devDependencies["style-loader"] = "latest";
             packageFile.devDependencies["babel-core"] = "latest";
             packageFile.devDependencies["babel-loader"] = "latest";
@@ -162,8 +165,8 @@ module.exports = generator.extend({
                 this.destinationPath('.gitignore')
             );
             this.fs.copy(
-                this.templatePath('webpack.config.js'),
-                this.destinationPath('webpack.config.js')
+                this.templatePath('webpackConfigs/*'),
+                this.destinationPath('webpackConfigs/')
             );
         },
         scripts: function(){
