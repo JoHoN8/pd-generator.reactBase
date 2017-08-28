@@ -39,6 +39,11 @@ module.exports = generator.extend({
             message: 'Which JS libraries would you like to include?',
             choices: [
                 {
+                    name: 'axios',
+                    value: 'axios',
+                    checked: true
+                },
+                {
                     name: 'jQuery',
                     value: 'jquery',
                     checked: false
@@ -80,6 +85,7 @@ module.exports = generator.extend({
             //self.config.set('appname', answers.projectName);
             // self.config.save();
             
+            self.includeAxios = self.includes(answers.jslibs, 'axios');
             self.includeJquery = self.includes(answers.jslibs, 'jquery');
             self.includeLodash = self.includes(answers.jslibs, 'lodash');
             self.includeMoment = self.includes(answers.jslibs, 'momentjs');             
@@ -101,7 +107,9 @@ module.exports = generator.extend({
                 description: this.desc,
                 main: "app.js",
                 scripts: {
-                    test: "echo \"Error: no test specified\" && exit 1"
+                    "devBuild": "webpack --config ./webpackConfigs/webpack.config.dev.js",
+                    "prodBuild": "webpack --config ./webpackConfigs/webpack.config.prod.js",
+                    "devServer": "webpack-dev-server --config ./webpackConfigs/webpack.server.config.js"
                 },
                 author: this.author,
                 license: "ISC",
@@ -113,7 +121,8 @@ module.exports = generator.extend({
             packageFile.dependencies.react = 'latest';
             packageFile.dependencies['react-dom'] = 'latest';
             packageFile.dependencies['prop-types'] = 'latest';
-            if(this.includeJquery) {packageFile.dependencies["jquery"] = "latest";}
+            if(this.includeAxios) {packageFile.dependencies["axios"] = "latest";}
+            if(this.includeJquery) {packageFile.dependencies["jquery"] = "2.2.4";}
             if(this.includeLodash) {packageFile.dependencies["lodash"] = "latest";}
             if(this.includeMoment) {packageFile.dependencies["moment"] = "latest";}
             if(this.includesputil) {packageFile.dependencies["pd-sputil"] = "latest";}
@@ -123,35 +132,26 @@ module.exports = generator.extend({
             
             //devDependencies
             packageFile.devDependencies["webpack"] = "latest";
-            packageFile.devDependencies["webpack-dev-server"] = "latest";
-            packageFile.devDependencies["css-loader"] = "latest";
+            packageFile.devDependencies["clean-webpack-plugin"] = "latest";
             packageFile.devDependencies["html-webpack-plugin"] = "latest";
+            packageFile.devDependencies["css-loader"] = "latest";
+            packageFile.devDependencies["sass-loader"] = "latest";
             packageFile.devDependencies["file-loader"] = "latest";
             packageFile.devDependencies["style-loader"] = "latest";
+            packageFile.devDependencies["extract-text-webpack-plugin"] = "latest";
+            packageFile.devDependencies["webpack-dev-server"] = "latest";
             packageFile.devDependencies["babel-core"] = "latest";
             packageFile.devDependencies["babel-loader"] = "latest";
-            packageFile.devDependencies["babel-preset-es2015"] = "latest";
+            packageFile.devDependencies["babel-preset-latest"] = "latest";
             packageFile.devDependencies["babel-preset-stage-0"] = "latest";
             packageFile.devDependencies["babel-preset-react"] = "latest";
-            packageFile.devDependencies["gulp"] = "latest";
-            packageFile.devDependencies["gulp-util"] = "latest";
-            packageFile.devDependencies["gulp-spsave"] = "latest";
             packageFile.devDependencies["eslint"] = "latest";
             packageFile.devDependencies["eslint-plugin-react"] = "latest";
+            packageFile.devDependencies["npm-run-all"] = "latest";
 
             this.fs.writeJSON(
                 this.destinationPath('package.json'),
                 packageFile
-            );
-        },
-        gulpfile: function(){
-            this.fs.copy(
-                this.templatePath('_gulpfile.js'),
-                this.destinationPath('gulpfile.js')
-            );
-            this.fs.copy(
-                this.templatePath('_gulp.config.js'),
-                this.destinationPath('gulp.config.js')
             );
         },
         appStaticFiles: function(){
@@ -165,7 +165,7 @@ module.exports = generator.extend({
                 this.destinationPath('.gitignore')
             );
             this.fs.copy(
-                this.templatePath('webpackConfigs/*'),
+                this.templatePath('webpackConfigs/**'),
                 this.destinationPath('webpackConfigs/')
             );
         },
@@ -175,7 +175,6 @@ module.exports = generator.extend({
                 this.destinationPath('src/scripts/app.js'),
                 {
                     projectName: this.projectName
-                    //app: this.config.get('ngappname')
                 }
             );
             this.fs.copyTpl(
@@ -183,7 +182,6 @@ module.exports = generator.extend({
                 this.destinationPath('src/scripts/components/components.jsx'),
                 {
                     projectName: this.projectName
-                    //app: this.config.get('ngappname')
                 }
             );
         },
@@ -193,7 +191,6 @@ module.exports = generator.extend({
                 this.destinationPath('src/styleSheets/main.css'),
                 {
                     projectName: this.projectName
-                    //app: this.config.get('ngappname')
                 }
             );
         },

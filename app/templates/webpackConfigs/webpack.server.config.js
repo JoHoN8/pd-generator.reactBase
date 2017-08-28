@@ -1,6 +1,7 @@
 const   path = require('path'),
         webpack = require('webpack'),
         HtmlWebpackPlugin = require('html-webpack-plugin'),
+        settings = require('./statics/configSettings.js'),
         htmlConfig = {
             template: "./src/index.html",
             filename: "index.html",
@@ -20,22 +21,31 @@ module.exports = {
         rules:[
             {
                 test: /\.css$/,
-                use: [ 'style-loader', 'css-loader' ]
-                //allows for import of styles (import css from 'file.css');
+                use: extractCSS.extract({
+                    use: [
+                        {
+                            loader: 'css-loader',
+                        }
+                    ]
+                })
             },
-            {  
-                test: /\.js$|\.jsx$/,
+            {
+                test: /\.scss$/,
+                use: extractSCSS.extract({
+                    use: [
+                        {
+                            loader: 'css-loader',
+                        },
+                        'sass-loader'
+                    ]
+                })
+            },
+            {
+                test: /\.js$/,
                 //exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
-                    options: {
-                        "presets": [
-                            ["es2015", {"modules": false}],
-                            "react",
-                            "stage-0"
-                        ],
-                        plugins: []
-                    }
+                    options: settings.babelOptions
                 }
             },
             {
